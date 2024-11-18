@@ -18,25 +18,27 @@ import com.example.eksamen24h.components.CharacterCard
 import com.example.yourapp.screens.delete_character.DeleteCharacterViewModel
 import kotlinx.coroutines.delay
 
-
 @Composable
 fun DeleteCharacterScreen(deleteCharacterViewModel: DeleteCharacterViewModel) {
     val characters by deleteCharacterViewModel.characters.collectAsState()
-    var showNotification by remember { mutableStateOf(false) }
+    var showNotificationDeleted by remember { mutableStateOf(false) }
     var notificationMessage by remember { mutableStateOf("") }
+    var showNoCharacterMessage by remember { mutableStateOf(true) }
 
     // Hent karakterer fra databasen når skjermen vises
     LaunchedEffect(Unit) {
         deleteCharacterViewModel.setCharacters()
+        delay(3000L)
+        showNoCharacterMessage = false
     }
 
     // Håndterer visning av slettemelding
-    LaunchedEffect(showNotification) {
-        if (showNotification) {
+    LaunchedEffect(showNotificationDeleted) {
+        if (showNotificationDeleted) {
             // Vent i 2 sekunder
             delay(2000)
             // Sett showNotification tilbake til false
-            showNotification = false
+            showNotificationDeleted = false
         }
     }
 
@@ -73,7 +75,7 @@ fun DeleteCharacterScreen(deleteCharacterViewModel: DeleteCharacterViewModel) {
                         onDelete = {
                             deleteCharacterViewModel.deleteCharacter(character)
                             notificationMessage = "${character.name} er slettet!"
-                            showNotification = true
+                            showNotificationDeleted = true
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -85,7 +87,7 @@ fun DeleteCharacterScreen(deleteCharacterViewModel: DeleteCharacterViewModel) {
                 onClick = {
                     deleteCharacterViewModel.deleteAllCharacters()
                     notificationMessage = "Alle karakterer er slettet!"
-                    showNotification = true
+                    showNotificationDeleted = true
                 },
                 modifier = Modifier.padding(top = 16.dp)
             ) {
@@ -94,7 +96,7 @@ fun DeleteCharacterScreen(deleteCharacterViewModel: DeleteCharacterViewModel) {
         }
 
         // Viser melding når karakterer slettes
-        if (showNotification) {
+        if (showNotificationDeleted) {
             Text(
                 text = notificationMessage,
                 color = Color.Red,

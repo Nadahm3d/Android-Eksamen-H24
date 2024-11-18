@@ -20,6 +20,7 @@ fun MyCharactersScreen(myCharactersViewModel: MyCharactersViewModel = viewModel(
     var showMessage by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
+        myCharactersViewModel.setCharacters()
         delay(3000L)
         showMessage = false
     }

@@ -34,7 +34,7 @@ object DatabaseRepository {
     }
 
     // Legger til en ny karakter i databasen
-    suspend fun insertCharacter (character: com.example.eksamen24h.data.data_classes.Character) : Long{
+    suspend fun insertCharacter (character: Character) : Long{
         try {
             return _characterDao.insertCharacter(character)
         } catch (e: SQLException){

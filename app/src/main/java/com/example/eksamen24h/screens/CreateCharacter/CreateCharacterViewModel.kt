@@ -7,6 +7,7 @@ import com.example.eksamen24h.data.room.DatabaseRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
@@ -14,14 +15,15 @@ class CreateCharacterViewModel : ViewModel() {
 
     // StateFlow som holder listen av karakterer
     private val _characters = MutableStateFlow<List<Character>>(emptyList())
-    val characters: StateFlow<List<Character>> = _characters
+    val character = _characters.asStateFlow()
+
 
     // StateFlow for notifikasjonsmelding
     private val _notificationMessage = MutableStateFlow<String?>(null)
     val notificationMessage: StateFlow<String?> = _notificationMessage
 
     // Henter karakterer fra databasen
-    private fun loadCharactersFromDatabase() {
+    fun loadCharactersFromDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             _characters.value = DatabaseRepository.getDatabaseCharacters()
         }
