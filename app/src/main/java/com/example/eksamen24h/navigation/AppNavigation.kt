@@ -11,14 +11,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.*
-import com.example.eksamen24h.screens.AllCharacters.CharacterScreen
-import com.example.eksamen24h.screens.CreateCharacter.CreateCharacterScreen
-import com.example.eksamen24h.screens.DeleteCharactersScreen.DeleteCharacterScreen
-import com.example.eksamen24h.screens.AllCharacters.CharacterViewModel
-import com.example.eksamen24h.screens.CreateCharacter.CreateCharacterViewModel
-import com.example.eksamen24h.screens.MyCharacters.MyCharactersScreen
-import com.example.eksamen24h.screens.MyCharacters.MyCharactersViewModel
-import com.example.yourapp.screens.delete_character.DeleteCharacterViewModel
+import com.example.eksamen24h.screens.allCharacters.CharacterScreen
+import com.example.eksamen24h.screens.createCharacter.CreateCharacterScreen
+import com.example.eksamen24h.screens.deleteCharactersScreen.DeleteCharacterScreen
+import com.example.eksamen24h.screens.allCharacters.CharacterViewModel
+import com.example.eksamen24h.screens.createCharacter.CreateCharacterViewModel
+import com.example.eksamen24h.screens.deleteCharactersScreen.DeleteCharacterViewModel
+import com.example.eksamen24h.screens.myCharacters.MyCharactersScreen
+import com.example.eksamen24h.screens.myCharacters.MyCharactersViewModel
+
 
 @Composable
 fun AppNavigation(
@@ -38,45 +39,61 @@ fun AppNavigation(
                     selected = selectedItemIndex == 0,
                     onClick = {
                         selectedItemIndex = 0
-                        navController.navigate("characters") {
-                        }
+                        navController.navigate("characters")
                     },
                     icon = { Icon(imageVector = Icons.Filled.Home, contentDescription = null) },
-                    label = { Text("Karakterer") }
+                    label = {
+                        Text(
+                            "Karakterer",
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                 )
                 NavigationBarItem(
                     selected = selectedItemIndex == 1,
                     onClick = {
                         selectedItemIndex = 1
-                        navController.navigate("create_character") {
-                        }
+                        navController.navigate("create_character")
                     },
                     icon = { Icon(imageVector = Icons.Filled.Add, contentDescription = null) },
-                    label = { Text("Opprett Karakter") }
+                    label = {
+                        Text(
+                            "Opprett Karakter",
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                 )
                 NavigationBarItem(
                     selected = selectedItemIndex == 2,
                     onClick = {
                         selectedItemIndex = 2
-                        navController.navigate("my_characters") {
-                        }
+                        navController.navigate("my_characters")
                     },
                     icon = { Icon(imageVector = Icons.Filled.Person, contentDescription = null) },
-                    label = { Text("Mine Karakterer") }
+                    label = {
+                        Text(
+                            "Mine Karakterer",
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                 )
                 NavigationBarItem(
                     selected = selectedItemIndex == 3,
                     onClick = {
                         selectedItemIndex = 3
-                        navController.navigate("delete_characters") {
-                        }
+                        navController.navigate("delete_characters")
                     },
                     icon = { Icon(imageVector = Icons.Filled.Delete, contentDescription = null) },
-                    label = { Text("Slett Karakterer") }
+                    label = {
+                        Text(
+                            "Slett Karakterer",
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                 )
             }
         }
-    ) { innerPadding -> // Her er content-parameteren
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = "characters",

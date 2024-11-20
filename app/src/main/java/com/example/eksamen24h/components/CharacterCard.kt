@@ -1,6 +1,5 @@
 package com.example.eksamen24h.components
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
@@ -22,41 +21,36 @@ fun CharacterCard(character: Character, onDelete: (() -> Unit)? = null, modifier
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp), // Legger til padding rundt kortet
+            .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp), // Padding rundt innholdet i kortet
-            verticalAlignment = Alignment.CenterVertically // Vertikal justering av innholdet
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Viser bilde av karakteren
             Image(
-                painter = rememberImagePainter(character.image), // Henter bildet fra URL
-                contentDescription = character.name, // Gir en beskrivelse for tilgjengelighet
+                painter = rememberImagePainter(character.image),
+                contentDescription = character.name,
                 modifier = Modifier
-                    .size(64.dp) // Setter størrelse på bildet til 64.dp
-                    .padding(end = 16.dp) // Legger til padding til høyre for bildet
+                    .size(64.dp)
+                    .padding(end = 16.dp)
             )
 
-            // Viser karakterens navn, type, art og status
             Column(
-                modifier = Modifier.weight(1f) // Får kolonnen til å ta opp tilgjengelig plass
+                modifier = Modifier.weight(1f)
             ) {
                 Text(text = "Navn: ${character.name}")
                 Text(text = "Art: ${character.species}")
                 Text(text = "Status: ${character.status}")
             }
 
-            // Slett-knapp
             if (onDelete != null) {
                 IconButton(
-                    onClick = {
-                        onDelete() // Kaller på slett-funksjonen
-                    }
+                    onClick = { onDelete() }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
-                        contentDescription = "Slett karakter" // Beskrivelse for tilgjengelighet
+                        contentDescription = "Slett karakter"
                     )
                 }
             }

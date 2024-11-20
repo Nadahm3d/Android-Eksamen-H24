@@ -1,4 +1,4 @@
-package com.example.eksamen24h.screens.CreateCharacter
+package com.example.eksamen24h.screens.createCharacter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,30 +13,24 @@ import kotlinx.coroutines.launch
 
 class CreateCharacterViewModel : ViewModel() {
 
-    // StateFlow som holder listen av karakterer
     private val _characters = MutableStateFlow<List<Character>>(emptyList())
     val character = _characters.asStateFlow()
 
-
-    // StateFlow for notifikasjonsmelding
     private val _notificationMessage = MutableStateFlow<String?>(null)
     val notificationMessage: StateFlow<String?> = _notificationMessage
 
-    // Henter karakterer fra databasen
     fun loadCharactersFromDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             _characters.value = DatabaseRepository.getDatabaseCharacters()
         }
     }
 
-    // Legger til en ny karakter i databasen
     fun insertCharacter(character: Character) {
         viewModelScope.launch(Dispatchers.IO) {
             val newCharacterId = DatabaseRepository.insertCharacter(character)
             if (newCharacterId != -1L) {
                 val newCharacter = character.copy(id = newCharacterId.toInt())
                 _characters.value += newCharacter
-                // Setter notifikasjonsmelding
                 _notificationMessage.value = "${character.name} har blitt lagt til!"
             }
         }

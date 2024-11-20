@@ -1,6 +1,5 @@
-package com.example.eksamen24h.screens.MyCharacters
+package com.example.eksamen24h.screens.myCharacters
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eksamen24h.data.data_classes.Character
@@ -14,12 +13,11 @@ import kotlinx.coroutines.launch
 class MyCharactersViewModel : ViewModel() {
 
     private val _characters = MutableStateFlow<List<Character>>(emptyList())
-    val characters = _characters.asStateFlow()
+    val characters: StateFlow<List<Character>> = _characters.asStateFlow()
 
-    fun setCharacters() {
+    fun loadCharactersFromDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             _characters.value = DatabaseRepository.getDatabaseCharacters()
-
         }
     }
 }

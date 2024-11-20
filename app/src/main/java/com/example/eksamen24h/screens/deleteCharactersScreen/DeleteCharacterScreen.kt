@@ -1,6 +1,4 @@
-
-package com.example.eksamen24h.screens.DeleteCharactersScreen
-
+package com.example.eksamen24h.screens.deleteCharactersScreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,29 +13,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.eksamen24h.components.CharacterCard
-import com.example.yourapp.screens.delete_character.DeleteCharacterViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun DeleteCharacterScreen(deleteCharacterViewModel: DeleteCharacterViewModel) {
     val characters by deleteCharacterViewModel.characters.collectAsState()
+
     var showNotificationDeleted by remember { mutableStateOf(false) }
     var notificationMessage by remember { mutableStateOf("") }
     var showNoCharacterMessage by remember { mutableStateOf(true) }
 
-    // Hent karakterer fra databasen når skjermen vises
     LaunchedEffect(Unit) {
-        deleteCharacterViewModel.setCharacters()
+        deleteCharacterViewModel.loadCharactersFromDatabase()
         delay(3000L)
         showNoCharacterMessage = false
     }
 
-    // Håndterer visning av slettemelding
     LaunchedEffect(showNotificationDeleted) {
         if (showNotificationDeleted) {
-            // Vent i 2 sekunder
-            delay(2000)
-            // Sett showNotification tilbake til false
+            delay(3000)
             showNotificationDeleted = false
         }
     }
@@ -49,15 +43,36 @@ fun DeleteCharacterScreen(deleteCharacterViewModel: DeleteCharacterViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "Delete Characters",
+            "Slett karakterer",
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
+        // Antall karakterer
         Text("Antall karakterer: ${characters.size}")
 
-        // Vis feilmelding hvis databasen er tom
+        // Flytt slettemeldingen her
+        if (showNotificationDeleted) {
+            Text(
+                text = notificationMessage,
+                color = Color.Red,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
+
+        Button(
+            onClick = {
+                deleteCharacterViewModel.deleteAllCharacters()
+                notificationMessage = "Alle karakterer er slettet!"
+                showNotificationDeleted = true
+            },
+            modifier = Modifier.padding(top = 16.dp)
+        ) {
+            Text("Slett alle karakterer")
+        }
+
         if (characters.isEmpty()) {
             Text(
                 text = "Ingen karakterer tilgjengelig for sletting!",
@@ -82,27 +97,9 @@ fun DeleteCharacterScreen(deleteCharacterViewModel: DeleteCharacterViewModel) {
                 }
             }
 
-            // Knapp for å slette alle karakterer
-            Button(
-                onClick = {
-                    deleteCharacterViewModel.deleteAllCharacters()
-                    notificationMessage = "Alle karakterer er slettet!"
-                    showNotificationDeleted = true
-                },
-                modifier = Modifier.padding(top = 16.dp)
-            ) {
-                Text("Slett alle karakterer")
-            }
-        }
-
-        // Viser melding når karakterer slettes
-        if (showNotificationDeleted) {
-            Text(
-                text = notificationMessage,
-                color = Color.Red,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
         }
     }
 }
+
+
+

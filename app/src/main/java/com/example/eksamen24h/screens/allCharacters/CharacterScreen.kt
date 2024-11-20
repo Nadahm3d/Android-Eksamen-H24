@@ -1,5 +1,4 @@
-package com.example.eksamen24h.screens.AllCharacters
-
+package com.example.eksamen24h.screens.allCharacters
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
@@ -24,6 +23,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun CharacterScreen(characterViewModel: CharacterViewModel) {
     val characters by characterViewModel.characters.collectAsState(initial = emptyList())
+
     var showMessage by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
@@ -37,7 +37,7 @@ fun CharacterScreen(characterViewModel: CharacterViewModel) {
             .padding(16.dp)
     ) {
         Text(
-            text = "Rick and Morty - Characters",
+            text = "Rick and Morty - Karakterer",
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -46,10 +46,9 @@ fun CharacterScreen(characterViewModel: CharacterViewModel) {
                 .padding(vertical = 16.dp)
         )
 
-
         if (showMessage) {
             Text(
-                text = "Henter karakterer fra databasen...",
+                text = "Henter Rick and Morty karakterer...",
                 fontSize = 18.sp,
                 modifier = Modifier
                     .padding(vertical = 16.dp)

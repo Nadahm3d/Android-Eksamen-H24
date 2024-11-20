@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 @Entity
 data class Character(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0, // ID for karakteren, auto-generert
+    val id: Int = 0,
+
     val name: String,
     val status: String,
     val species: String,

@@ -1,4 +1,4 @@
-package com.example.eksamen24h.screens.CreateCharacter
+package com.example.eksamen24h.screens.createCharacter
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.sp
 import com.example.eksamen24h.data.data_classes.Character
 import kotlinx.coroutines.delay
 
-
 @Composable
 fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
     val characters by createCharacterViewModel.character.collectAsState()
@@ -23,11 +22,10 @@ fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
     var species by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("") }
 
-    // Tilstand for notifikasjon
+    var showError by remember { mutableStateOf(false) }
     var notificationVisible by remember { mutableStateOf(false) }
     var notificationMessage by remember { mutableStateOf("") }
 
-    // Hent karakterer fra databasen når skjermen opprettes
     LaunchedEffect(Unit) {
         createCharacterViewModel.loadCharactersFromDatabase()
     }
@@ -38,18 +36,25 @@ fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Overskrift for skjermen
         Text(
-            text = "Create a New Character",
+            text = "Lag ny karakter",
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Viser antall lagrede karakterer
         Text("Antall karakterer: ${characters.size}")
 
-        // Inputfelt for navn
+        // Feilmelding
+        if (showError) {
+            Text(
+                text = "Alle felt må fylles ut",
+                color = Color.Red,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+
         TextField(
             value = name,
             onValueChange = { name = it },
@@ -59,7 +64,6 @@ fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
                 .padding(vertical = 8.dp)
         )
 
-        // Inputfelt for art
         TextField(
             value = species,
             onValueChange = { species = it },
@@ -69,7 +73,6 @@ fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
                 .padding(vertical = 8.dp)
         )
 
-        // Inputfelt for status
         TextField(
             value = status,
             onValueChange = { status = it },
@@ -79,32 +82,35 @@ fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
                 .padding(vertical = 8.dp)
         )
 
-        // Knapp for å lagre ny karakter
         Button(
             onClick = {
-                val newCharacter = Character(
-                    name = name,
-                    species = species,
-                    status = status,
-                    image = "" // Bildet er tomt som standard
-                )
-                createCharacterViewModel.insertCharacter(newCharacter) // Setter inn ny karakter i databasen
+                if (name.isBlank() || species.isBlank() || status.isBlank()) {
+                    showError = true
+                } else {
+                    showError = false
 
-                // Vise notifikasjon
-                notificationMessage = "${newCharacter.name} er lagt til!"
-                notificationVisible = true
+                    val newCharacter = Character(
+                        name = name,
+                        species = species,
+                        status = status,
+                        image = ""
+                    )
+                    createCharacterViewModel.insertCharacter(newCharacter)
 
-                // Tilbakestill inputfeltene
-                name = ""
-                species = ""
-                status = ""
+                    notificationMessage = "${newCharacter.name} er lagt til!"
+                    notificationVisible = true
+
+                    name = ""
+                    species = ""
+                    status = ""
+                }
             },
             modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Lagre ny karakter")
         }
 
-        // Vise notifikasjon hvis den er synlig
+        // Notifikasjon
         if (notificationVisible) {
             Text(
                 text = notificationMessage,
@@ -113,15 +119,11 @@ fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
                 modifier = Modifier.padding(top = 16.dp)
             )
 
-            // La meldingen være synlig i 2 sekunder
             LaunchedEffect(notificationVisible) {
-                delay(2000L)
+                delay(3000L)
                 notificationVisible = false
             }
         }
     }
 }
-
-
-
 
