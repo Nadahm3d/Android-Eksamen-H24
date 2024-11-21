@@ -45,7 +45,7 @@ fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
 
         Text("Antall karakterer: ${characters.size}")
 
-        // Feilmelding
+
         if (showError) {
             Text(
                 text = "Alle felt må fylles ut",
@@ -110,7 +110,7 @@ fun CreateCharacterScreen(createCharacterViewModel: CreateCharacterViewModel) {
             Text("Lagre ny karakter")
         }
 
-        // Notifikasjon
+
         if (notificationVisible) {
             Text(
                 text = notificationMessage,

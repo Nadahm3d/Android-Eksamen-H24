@@ -22,3 +22,8 @@ interface CharacterDao {
     @Delete
     suspend fun deleteCharacter(character: Character): Int
 }
+
+
+
+
+

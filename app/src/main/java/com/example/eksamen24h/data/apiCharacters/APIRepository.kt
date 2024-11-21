@@ -1,4 +1,4 @@
-package com.example.eksamen24h.data.room
+package com.example.eksamen24h.data.apiCharacters
 
 import com.example.eksamen24h.data.data_classes.Character
 import okhttp3.OkHttpClient
@@ -34,3 +34,6 @@ object APIRepository {
         }
     }
 }
+
+
+
